@@ -19,7 +19,7 @@ const SlideContent: React.FC<SlideContentProps> = ({ slide, isActive }) => {
             <img 
               src={slide.content as string} 
               alt="Slide" 
-              className={`w-full h-full object-cover transition-transform duration-[2000ms] ease-out ${isActive ? 'scale-105' : 'scale-100'}`}
+              className="w-full h-full object-cover" 
             />
           </div>
         );

@@ -30,7 +30,7 @@ const Character: React.FC<CharacterProps> = ({ imageSrc, state }) => {
 
   return (
     <div 
-      className={`relative w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 z-20 pointer-events-none ${getTransitionClass()} ${state === CharacterState.HIDDEN ? 'opacity-0 translate-y-20' : 'opacity-100 translate-y-0'}`}
+      className={`relative w-28 h-28 md:w-40 md:h-40 lg:w-48 lg:h-48 z-20 pointer-events-none ${getTransitionClass()} ${state === CharacterState.HIDDEN ? 'opacity-0 translate-y-20' : 'opacity-100 translate-y-0'}`}
     >
       {/* 
         Avatar Container Style:

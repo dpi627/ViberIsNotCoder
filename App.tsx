@@ -15,8 +15,10 @@ const App: React.FC = () => {
   // Character and Dialogue States
   const [characterState, setCharacterState] = useState<CharacterState>(CharacterState.IDLE);
   const [showDialogue, setShowDialogue] = useState(false);
-  // Controls the visible position of the character wrapper (for running effect)
-  const [charPositionX, setCharPositionX] = useState(10); // Percent from left
+  
+  // Controls the visible position of the character wrapper (string for CSS value)
+  // '8rem' moves the character slightly to the right, allowing for better overlap with the dialogue box.
+  const [charPosition, setCharPosition] = useState('8rem'); 
 
   // Initialize first slide logic after intro
   useEffect(() => {
@@ -37,20 +39,18 @@ const App: React.FC = () => {
     setCharacterState(CharacterState.RUNNING_RIGHT);
     
     // Simulate movement duration
-    // In a real game engine we'd calculate distance, here we just use timing
-    setCharPositionX(50); // Move to center
+    setCharPosition('50%'); // Move to center
 
     setTimeout(() => {
       // 3. Change Slide
       setCurrentSlideIndex((prev) => prev + 1);
       
       // 4. Reset Character pos for entry
-      // We want the character to "keep running" or "run in" from left
-      setCharPositionX(0); // Snap back to left edge (hidden or start)
+      setCharPosition('-10rem'); // Snap back to left edge (hidden or start)
       
       // Short delay for the slide render
       setTimeout(() => {
-        setCharPositionX(10); // Run to resting spot
+        setCharPosition('8rem'); // Run to resting spot
         
         // 5. Stop Character
         setTimeout(() => {
@@ -69,17 +69,16 @@ const App: React.FC = () => {
 
     // Character runs Left (backwards concept)
     setCharacterState(CharacterState.RUNNING_LEFT);
-    setCharPositionX(-10); // Run off screen left
+    setCharPosition('-10rem'); // Run off screen left
 
     setTimeout(() => {
       setCurrentSlideIndex((prev) => prev - 1);
       
-      // Character enters from Right for continuity? Or just runs back in from left?
-      // Let's have them run in from the right to simulate "going back"
-      setCharPositionX(100); 
+      // Character enters from Right for continuity
+      setCharPosition('120%'); 
       
       setTimeout(() => {
-        setCharPositionX(10);
+        setCharPosition('8rem'); // Run back to resting spot
         setCharacterState(CharacterState.RUNNING_LEFT); // Ensure facing left while running in
 
         setTimeout(() => {
@@ -114,19 +113,16 @@ const App: React.FC = () => {
       
       {/* 1. Slide Container */}
       <div className="absolute inset-0 z-0">
-         {/* We can keep the previous slide in DOM for fade effect, but for simplicity we render current. 
-             Ideally, use a key to force re-render animation. */}
          <div key={currentSlide.id} className="w-full h-full animate-fadeIn">
             <SlideContent slide={currentSlide} isActive={!isTransitioning} />
          </div>
       </div>
 
       {/* 2. Character Layer */}
-      {/* The container moves using left/right percent to simulate position */}
       <div 
         className="absolute bottom-0 z-20 transition-all duration-700 ease-linear will-change-transform"
         style={{ 
-          left: `${charPositionX}%`,
+          left: charPosition,
           transform: 'translateX(-50%)' // Center the container on the point
         }}
       >
@@ -136,7 +132,15 @@ const App: React.FC = () => {
         />
       </div>
 
-      {/* 3. UI Overlay (Dialogue & Controls) */}
+      {/* 3. Dialogue Layer (Independent of UI padding to sit flush at bottom) */}
+      <div className="absolute inset-0 z-30 pointer-events-none">
+        <DialogueBox 
+            text={currentSlide.dialogue} 
+            isVisible={showDialogue && !isTransitioning} 
+        />
+      </div>
+
+      {/* 4. Controls UI Layer (With Padding) */}
       <div className="absolute inset-0 z-30 pointer-events-none flex flex-col justify-between p-4 md:p-8">
         
         {/* Top Bar: Progress */}
@@ -146,15 +150,9 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Area: Controls & Dialogue */}
+        {/* Bottom Area: Controls Only */}
         <div className="relative w-full h-full pointer-events-none">
           
-          {/* Dialogue (Independent of controls) */}
-          <DialogueBox 
-            text={currentSlide.dialogue} 
-            isVisible={showDialogue && !isTransitioning} 
-          />
-
           {/* Navigation Controls (Side Buttons) */}
           <div className="absolute inset-y-0 left-0 flex items-center pointer-events-auto">
              <button

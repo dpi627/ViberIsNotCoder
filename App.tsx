@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Maximize, Minimize, Home } from 'lucide-react';
 import { APP_CONFIG } from './constants';
 import { CharacterState, CharacterAnimation } from './types';
 import SlideContent from './components/SlideContent';
@@ -11,6 +11,7 @@ const App: React.FC = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Character and Dialogue States
   const [characterState, setCharacterState] = useState<CharacterState>(CharacterState.IDLE);
@@ -22,6 +23,58 @@ const App: React.FC = () => {
   const [charPosition, setCharPosition] = useState('8rem');
 
   const timers = useRef<NodeJS.Timeout[]>([]);
+
+  // Toggle fullscreen mode
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  }, []);
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  // Go back to first slide
+  const handleGoHome = useCallback(() => {
+    if (isTransitioning || currentSlideIndex === 0) return;
+
+    setShowDialogue(false);
+    clearTimers();
+    setIsTransitioning(true);
+
+    // Quick transition to first slide
+    setCharacterState(CharacterState.RUNNING_LEFT);
+    setCharPosition('-10rem');
+
+    setTimeout(() => {
+      setCurrentSlideIndex(0);
+      setCharPosition('120%');
+
+      setTimeout(() => {
+        setCharPosition('8rem');
+        setCharacterState(CharacterState.RUNNING_LEFT);
+
+        setTimeout(() => {
+          setCharacterState(CharacterState.IDLE);
+          const firstSlide = APP_CONFIG.slides[0];
+          if (firstSlide?.transition?.characterEffect) {
+            setCharacterEffect(firstSlide.transition.characterEffect);
+          }
+          setIsTransitioning(false);
+        }, 600);
+      }, 50);
+    }, 600);
+  }, [currentSlideIndex, isTransitioning]);
 
   const clearTimers = useCallback(() => {
     timers.current.forEach(clearTimeout);
@@ -233,9 +286,28 @@ const App: React.FC = () => {
             </button>
           </div>
 
+          {/* Bottom Left: Fullscreen and Home Buttons */}
+          <div className="absolute bottom-0 left-0 pointer-events-auto flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+            <button
+              onClick={toggleFullscreen}
+              className="p-2 md:p-2.5 rounded-full bg-black/50 hover:bg-white/20 backdrop-blur-sm text-white transition-all transform hover:scale-110"
+              title={isFullscreen ? '退出全螢幕' : '全螢幕'}
+            >
+              {isFullscreen ? <Minimize size={18} className="md:w-5 md:h-5" /> : <Maximize size={18} className="md:w-5 md:h-5" />}
+            </button>
+            <button
+              onClick={handleGoHome}
+              disabled={currentSlideIndex === 0 || isTransitioning}
+              className="p-2 md:p-2.5 rounded-full bg-black/50 hover:bg-white/20 backdrop-blur-sm text-white transition-all transform hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed"
+              title="回到首頁"
+            >
+              <Home size={18} className="md:w-5 md:h-5" />
+            </button>
+          </div>
+
           {/* Bottom Right: Slide Counter */}
           <div className="absolute bottom-0 right-0 pointer-events-auto opacity-50 hover:opacity-100 transition-opacity">
-            <div className="text-white font-mono text-sm bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
+            <div className="text-white font-mono text-xs md:text-sm bg-black/50 px-2 py-1 md:px-3 rounded-full backdrop-blur-sm">
               SLIDE {currentSlideIndex + 1} / {APP_CONFIG.slides.length}
             </div>
           </div>

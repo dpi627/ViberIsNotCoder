@@ -33,7 +33,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-2',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-2.png'),
-      dialogue: "你各位主管請出來面對。",
+      dialogue: "各位主管大家好。",
       backgroundColor: "bg-indigo-900",
       transition: {
         slideEnter: SlideAnimation.SLIDE_LEFT,
@@ -112,7 +112,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-9',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-9.png'),
-      dialogue: "不要外包大腦、不要外包你的大腦、不要外包。 (如果有的話)",
+      dialogue: "不要外包大腦、不要外包你的大腦、不要外包。",
       transition: {
         slideEnter: SlideAnimation.BOUNCE,
         characterEffect: CharacterAnimation.JUMP,

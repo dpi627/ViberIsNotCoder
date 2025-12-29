@@ -4,9 +4,10 @@ import { CharacterState } from '../types';
 interface CharacterProps {
   imageSrc: string;
   state: CharacterState;
+  onClick?: () => void;
 }
 
-const Character: React.FC<CharacterProps> = ({ imageSrc, state }) => {
+const Character: React.FC<CharacterProps> = ({ imageSrc, state, onClick }) => {
   // Determine CSS classes based on state
   const getTransformClass = () => {
     switch (state) {
@@ -24,13 +25,14 @@ const Character: React.FC<CharacterProps> = ({ imageSrc, state }) => {
   };
 
   const getTransitionClass = () => {
-     // If we are running, we might want faster transitions, or none if controlled by parent frame
-     return 'transition-all duration-300 ease-in-out';
+    // If we are running, we might want faster transitions, or none if controlled by parent frame
+    return 'transition-all duration-300 ease-in-out';
   };
 
   return (
-    <div 
-      className={`relative w-28 h-28 md:w-40 md:h-40 lg:w-48 lg:h-48 z-20 pointer-events-none ${getTransitionClass()} ${state === CharacterState.HIDDEN ? 'opacity-0 translate-y-20' : 'opacity-100 translate-y-0'}`}
+    <div
+      onClick={onClick}
+      className={`relative w-28 h-28 md:w-40 md:h-40 lg:w-48 lg:h-48 z-20 pointer-events-auto cursor-pointer ${getTransitionClass()} ${state === CharacterState.HIDDEN ? 'opacity-0 translate-y-20' : 'opacity-100 translate-y-0'}`}
     >
       {/* 
         Avatar Container Style:

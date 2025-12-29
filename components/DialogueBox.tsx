@@ -14,11 +14,11 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ text, isVisible, onComplete }
     if (isVisible) {
       setDisplayedText('');
       setIsTyping(true);
-      
+
       // Use a counter to track how many characters to slice
       // This is more robust than appending to previous state which can cause first char issues
       let charCount = 0;
-      
+
       const intervalId = setInterval(() => {
         charCount++;
         if (charCount <= text.length) {
@@ -31,18 +31,17 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ text, isVisible, onComplete }
       }, 30); // Typing speed
 
       return () => clearInterval(intervalId);
-    } else {
-      setDisplayedText('');
     }
   }, [text, isVisible, onComplete]);
 
   return (
-    <div 
+    <div
       className={`
-        absolute bottom-2 left-4 right-4 md:left-32 md:right-12 lg:left-48 lg:right-20 
-        bg-black/80 backdrop-blur-lg border border-white/20 
-        text-white p-6 rounded-2xl shadow-2xl z-30
-        transition-all duration-500 ease-out transform origin-bottom
+        absolute bottom-8 left-44 md:left-52 lg:left-60
+        w-fit max-w-[50vw] md:max-w-[60vw] lg:max-w-[65vw]
+        bg-black/30 backdrop-blur-lg border border-white/20 
+        text-white p-4 md:p-6 rounded-2xl shadow-2xl z-30
+        transition-all duration-500 ease-out transform origin-bottom-left
         ${isVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}
       `}
     >

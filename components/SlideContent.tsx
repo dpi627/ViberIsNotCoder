@@ -1,14 +1,45 @@
 import React from 'react';
-import { SlideConfig, SlideType } from '../types';
+import { SlideConfig, SlideType, SlideAnimation } from '../types';
 
 interface SlideContentProps {
   slide: SlideConfig;
   isActive: boolean;
 }
 
+// Map SlideAnimation enum to CSS class names
+const getEnterAnimationClass = (animation?: SlideAnimation): string => {
+  switch (animation) {
+    case SlideAnimation.FADE:
+      return 'animate-slide-fade';
+    case SlideAnimation.SLIDE_LEFT:
+      return 'animate-slide-left';
+    case SlideAnimation.SLIDE_RIGHT:
+      return 'animate-slide-right';
+    case SlideAnimation.SLIDE_UP:
+      return 'animate-slide-up';
+    case SlideAnimation.SLIDE_DOWN:
+      return 'animate-slide-down';
+    case SlideAnimation.ZOOM_IN:
+      return 'animate-slide-zoom-in';
+    case SlideAnimation.ZOOM_OUT:
+      return 'animate-slide-zoom-out';
+    case SlideAnimation.FLIP:
+      return 'animate-slide-flip';
+    case SlideAnimation.BOUNCE:
+      return 'animate-slide-bounce';
+    case SlideAnimation.NONE:
+      return '';
+    default:
+      return 'animate-slide-fade'; // Default animation
+  }
+};
+
 const SlideContent: React.FC<SlideContentProps> = ({ slide, isActive }) => {
   // Determine background class
   const bgClass = slide.backgroundColor || 'bg-gray-900';
+
+  // Get animation class based on slide configuration
+  const animationClass = getEnterAnimationClass(slide.transition?.slideEnter);
 
   const renderContent = () => {
     switch (slide.type) {
@@ -56,7 +87,7 @@ const SlideContent: React.FC<SlideContentProps> = ({ slide, isActive }) => {
   };
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className={`absolute inset-0 overflow-hidden ${animationClass}`}>
       {renderContent()}
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { APP_CONFIG } from './constants';
-import { CharacterState } from './types';
+import { CharacterState, CharacterAnimation } from './types';
 import SlideContent from './components/SlideContent';
 import Character from './components/Character';
 import DialogueBox from './components/DialogueBox';
@@ -15,6 +15,7 @@ const App: React.FC = () => {
   // Character and Dialogue States
   const [characterState, setCharacterState] = useState<CharacterState>(CharacterState.IDLE);
   const [showDialogue, setShowDialogue] = useState(false);
+  const [characterEffect, setCharacterEffect] = useState<CharacterAnimation | undefined>(undefined);
 
   // Controls the visible position of the character wrapper (string for CSS value)
   // '8rem' moves the character slightly to the right, allowing for better overlap with the dialogue box.
@@ -99,9 +100,14 @@ const App: React.FC = () => {
       setTimeout(() => {
         setCharPosition('8rem'); // Run to resting spot
 
-        // 5. Stop Character
+        // 5. Stop Character and trigger effect animation
         setTimeout(() => {
           setCharacterState(CharacterState.IDLE);
+          // Trigger character effect animation if configured
+          const nextSlide = APP_CONFIG.slides[currentSlideIndex + 1];
+          if (nextSlide?.transition?.characterEffect) {
+            setCharacterEffect(nextSlide.transition.characterEffect);
+          }
           setIsTransitioning(false);
           // Effect will trigger startDialogueCycle
         }, 500);
@@ -133,6 +139,11 @@ const App: React.FC = () => {
         setTimeout(() => {
           // Face forward (Right or Idle)
           setCharacterState(CharacterState.IDLE);
+          // Trigger character effect animation if configured
+          const prevSlide = APP_CONFIG.slides[currentSlideIndex - 1];
+          if (prevSlide?.transition?.characterEffect) {
+            setCharacterEffect(prevSlide.transition.characterEffect);
+          }
           setIsTransitioning(false);
         }, 600);
       }, 50);
@@ -178,6 +189,7 @@ const App: React.FC = () => {
         <Character
           imageSrc={APP_CONFIG.characterImage}
           state={characterState}
+          effectAnimation={characterEffect}
           onClick={handleCharacterClick}
         />
       </div>
@@ -187,6 +199,7 @@ const App: React.FC = () => {
         <DialogueBox
           text={currentSlide.dialogue}
           isVisible={showDialogue && !isTransitioning}
+          dialogueAnimation={currentSlide.transition?.dialogueStyle}
           onComplete={handleDialogueTypingComplete}
         />
       </div>

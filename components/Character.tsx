@@ -1,13 +1,52 @@
-import React from 'react';
-import { CharacterState } from '../types';
+import React, { useEffect, useState } from 'react';
+import { CharacterState, CharacterAnimation } from '../types';
 
 interface CharacterProps {
   imageSrc: string;
   state: CharacterState;
+  effectAnimation?: CharacterAnimation;
   onClick?: () => void;
 }
 
-const Character: React.FC<CharacterProps> = ({ imageSrc, state, onClick }) => {
+// Map CharacterAnimation enum to CSS class names
+const getEffectAnimationClass = (animation?: CharacterAnimation): string => {
+  switch (animation) {
+    case CharacterAnimation.BOUNCE:
+      return 'animate-char-bounce';
+    case CharacterAnimation.SPIN:
+      return 'animate-char-spin';
+    case CharacterAnimation.SHAKE:
+      return 'animate-char-shake';
+    case CharacterAnimation.JUMP:
+      return 'animate-char-jump';
+    case CharacterAnimation.WAVE:
+      return 'animate-char-wave';
+    case CharacterAnimation.PULSE:
+      return 'animate-char-pulse';
+    case CharacterAnimation.NONE:
+    default:
+      return '';
+  }
+};
+
+const Character: React.FC<CharacterProps> = ({ imageSrc, state, effectAnimation, onClick }) => {
+  const [currentEffect, setCurrentEffect] = useState<string>('');
+
+  // Trigger effect animation when effectAnimation prop changes
+  useEffect(() => {
+    if (effectAnimation && effectAnimation !== CharacterAnimation.NONE) {
+      const effectClass = getEffectAnimationClass(effectAnimation);
+      setCurrentEffect(effectClass);
+
+      // Clear effect after animation completes
+      const timer = setTimeout(() => {
+        setCurrentEffect('');
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [effectAnimation]);
+
   // Determine CSS classes based on state
   const getTransformClass = () => {
     switch (state) {
@@ -39,7 +78,7 @@ const Character: React.FC<CharacterProps> = ({ imageSrc, state, onClick }) => {
         Since the image has a solid background (orange), we round it fully and add a border/shadow
         to make it look like a sticker or badge rather than a moving square box.
       */}
-      <div className={`w-full h-full rounded-full overflow-hidden border-4 border-white shadow-2xl bg-orange-500 ${getTransformClass()}`}>
+      <div className={`w-full h-full rounded-full overflow-hidden border-4 border-white shadow-2xl bg-orange-500 ${getTransformClass()} ${currentEffect}`}>
         <img
           src={imageSrc}
           alt="Character"

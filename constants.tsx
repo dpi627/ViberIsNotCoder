@@ -19,15 +19,13 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-1',
       type: SlideType.IMAGE,
       content: 'https://picsum.photos/1920/1080?random=1',
-      dialogue: "大家好，我是Will保哥",
+      dialogue: "Yo! Welcome to the StorySlider! Check out my new style. Afro and shades, ready to roll!",
     },
     {
       id: 'slide-2',
-      type: SlideType.TEXT,
-      title: "Design Philosophy",
-      content: "We believe in separating content from presentation. This text slide is rendered purely from configuration data.",
+      type: SlideType.IMAGE,
+      content: "assets\\slide-2.png",
       dialogue: "Even with these sunglasses on, I can clearly see the beautiful typography here.",
-      backgroundColor: "bg-indigo-900"
     },
     {
       id: 'slide-3',

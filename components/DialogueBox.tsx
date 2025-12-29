@@ -14,12 +14,15 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ text, isVisible, onComplete }
     if (isVisible) {
       setDisplayedText('');
       setIsTyping(true);
-      let index = 0;
+      
+      // Use a counter to track how many characters to slice
+      // This is more robust than appending to previous state which can cause first char issues
+      let charCount = 0;
       
       const intervalId = setInterval(() => {
-        if (index < text.length) {
-          setDisplayedText((prev) => prev + text.charAt(index));
-          index++;
+        charCount++;
+        if (charCount <= text.length) {
+          setDisplayedText(text.slice(0, charCount));
         } else {
           clearInterval(intervalId);
           setIsTyping(false);
@@ -44,7 +47,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ text, isVisible, onComplete }
       `}
     >
       <div className="flex flex-col space-y-2">
-        <span className="text-pink-400 text-xs font-bold uppercase tracking-widest">Guide</span>
+        <span className="text-pink-400 text-xs font-bold uppercase tracking-widest">Will 保哥</span>
         <p className={`text-lg md:text-xl leading-relaxed font-light ${isTyping ? 'typewriter-cursor' : ''}`}>
           {displayedText}
         </p>

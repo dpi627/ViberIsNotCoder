@@ -22,7 +22,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-1',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-1.png'),
-      dialogue: "大家好，我是 Will 保哥。",
+      dialogue: "大家好，我是 Will 保哥 !!",
       transition: {
         slideEnter: SlideAnimation.FADE,
         characterEffect: CharacterAnimation.WAVE,
@@ -113,6 +113,17 @@ export const APP_CONFIG: AppConfig = {
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-9.png'),
       dialogue: "不要外包大腦、不要外包你的大腦、不要外包。",
+      transition: {
+        slideEnter: SlideAnimation.BOUNCE,
+        characterEffect: CharacterAnimation.JUMP,
+        dialogueStyle: DialogueAnimation.POP
+      }
+    },
+    {
+      id: 'slide-10',
+      type: SlideType.IMAGE,
+      content: assetPath('assets/slide-10.png'),
+      dialogue: "一言不合就開課，堂堂上到一十二。全程高潮無尿點，回首已過子夜天。",
       transition: {
         slideEnter: SlideAnimation.BOUNCE,
         characterEffect: CharacterAnimation.JUMP,

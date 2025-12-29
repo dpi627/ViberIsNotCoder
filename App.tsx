@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Play, Maximize, Minimize, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Home } from 'lucide-react';
 import { APP_CONFIG } from './constants';
 import { CharacterState, CharacterAnimation } from './types';
 import SlideContent from './components/SlideContent';
@@ -11,7 +11,7 @@ const App: React.FC = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+
 
   // Character and Dialogue States
   const [characterState, setCharacterState] = useState<CharacterState>(CharacterState.IDLE);
@@ -24,25 +24,7 @@ const App: React.FC = () => {
 
   const timers = useRef<NodeJS.Timeout[]>([]);
 
-  // Toggle fullscreen mode
-  const toggleFullscreen = useCallback(() => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.error(`Error attempting to enable fullscreen: ${err.message}`);
-      });
-    } else {
-      document.exitFullscreen();
-    }
-  }, []);
 
-  // Listen for fullscreen changes
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
 
   // Go back to first slide
   const handleGoHome = useCallback(() => {
@@ -112,7 +94,7 @@ const App: React.FC = () => {
         setShowDialogue(true); // Restart cycle
       }, 5000);
 
-    }, 3000);
+    }, 5000);
   }, [requestTimer]);
 
   const handleCharacterClick = useCallback(() => {
@@ -288,13 +270,6 @@ const App: React.FC = () => {
 
           {/* Bottom Right: Fullscreen, Home Buttons + Slide Counter */}
           <div className="absolute bottom-0 right-0 pointer-events-auto flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
-            <button
-              onClick={toggleFullscreen}
-              className="p-2 md:p-2.5 rounded-full bg-black/50 hover:bg-white/20 backdrop-blur-sm text-white transition-all transform hover:scale-110"
-              title={isFullscreen ? '退出全螢幕' : '全螢幕'}
-            >
-              {isFullscreen ? <Minimize size={18} className="md:w-5 md:h-5" /> : <Maximize size={18} className="md:w-5 md:h-5" />}
-            </button>
             <button
               onClick={handleGoHome}
               disabled={currentSlideIndex === 0 || isTransitioning}

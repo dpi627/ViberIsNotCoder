@@ -52,7 +52,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ text, isVisible, dialogueAnim
           setIsTyping(false);
           if (onComplete) onComplete();
         }
-      }, 30); // Typing speed
+      }, 60); // Typing speed
 
       return () => clearInterval(intervalId);
     }

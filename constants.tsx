@@ -33,7 +33,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-2',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-2.png'),
-      dialogue: "各位主管大家好。",
+      dialogue: "各位技術主管好，今天來談談 Vibe Coding，不是 Coding。",
       backgroundColor: "bg-indigo-900",
       transition: {
         slideEnter: SlideAnimation.SLIDE_LEFT,

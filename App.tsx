@@ -286,8 +286,8 @@ const App: React.FC = () => {
             </button>
           </div>
 
-          {/* Bottom Left: Fullscreen and Home Buttons */}
-          <div className="absolute bottom-0 left-0 pointer-events-auto flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+          {/* Bottom Right: Fullscreen, Home Buttons + Slide Counter */}
+          <div className="absolute bottom-0 right-0 pointer-events-auto flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
             <button
               onClick={toggleFullscreen}
               className="p-2 md:p-2.5 rounded-full bg-black/50 hover:bg-white/20 backdrop-blur-sm text-white transition-all transform hover:scale-110"
@@ -303,10 +303,6 @@ const App: React.FC = () => {
             >
               <Home size={18} className="md:w-5 md:h-5" />
             </button>
-          </div>
-
-          {/* Bottom Right: Slide Counter */}
-          <div className="absolute bottom-0 right-0 pointer-events-auto opacity-50 hover:opacity-100 transition-opacity">
             <div className="text-white font-mono text-xs md:text-sm bg-black/50 px-2 py-1 md:px-3 rounded-full backdrop-blur-sm">
               SLIDE {currentSlideIndex + 1} / {APP_CONFIG.slides.length}
             </div>

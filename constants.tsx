@@ -22,7 +22,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-1',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-1.png'),
-      dialogue: "大家好，我是 Will 保哥 !!",
+      dialogue: "大家好，我是 Will 保哥",
       transition: {
         slideEnter: SlideAnimation.FADE,
         characterEffect: CharacterAnimation.WAVE,
@@ -33,7 +33,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-2',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-2.png'),
-      dialogue: "各位技術主管好，今天來談談 Vibe Coding，不是 Coding。",
+      dialogue: "各位技術主管好，今天來談談 Vibe Coding",
       backgroundColor: "bg-indigo-900",
       transition: {
         slideEnter: SlideAnimation.SLIDE_LEFT,
@@ -45,7 +45,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-3',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-3.png'),
-      dialogue: "Vibe Coding 的世界裡，程式是一次性消耗品。",
+      dialogue: "在 Vibe Coding 的世界裡，程式是一次性消耗品",
       backgroundColor: "bg-indigo-900",
       transition: {
         slideEnter: SlideAnimation.ZOOM_IN,
@@ -57,7 +57,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-4',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-4.png'),
-      dialogue: "Vibe Coding 是戰術工具，不是戰略能力。",
+      dialogue: "Vibe Coding 是戰術工具，不是戰略能力",
       transition: {
         slideEnter: SlideAnimation.FLIP,
         characterEffect: CharacterAnimation.PULSE,
@@ -68,7 +68,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-5',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-5.png'),
-      dialogue: "工程師的世界裡，程式是長期負債與資產的混合體。",
+      dialogue: "工程師的世界裡，程式是長期負債與資產的混合體",
       transition: {
         slideEnter: SlideAnimation.SLIDE_UP,
         characterEffect: CharacterAnimation.JUMP,
@@ -79,7 +79,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-6',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-6.png'),
-      dialogue: "理解，通常不是學來的，是被現實打出來的。",
+      dialogue: "理解，通常不是學來的，而是被現實打出來的",
       transition: {
         slideEnter: SlideAnimation.BOUNCE,
         characterEffect: CharacterAnimation.SHAKE,
@@ -90,7 +90,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-7',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-7.png'),
-      dialogue: "這不是技術高低的差距，而是責任半徑的區別。",
+      dialogue: "不是技術高低的差距，而是責任半徑的區別",
       transition: {
         slideEnter: SlideAnimation.ZOOM_OUT,
         characterEffect: CharacterAnimation.SPIN,
@@ -101,7 +101,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-8',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-8.png'),
-      dialogue: "不是不想教 Vibe Coding，而是很清楚那是一種完全不同的價值系統。",
+      dialogue: "Vibe Coding 是一種完全不同的價值系統",
       transition: {
         slideEnter: SlideAnimation.SLIDE_DOWN,
         characterEffect: CharacterAnimation.WAVE,
@@ -112,7 +112,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-9',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-9.png'),
-      dialogue: "不要外包大腦、不要外包你的大腦、不要外包。",
+      dialogue: "不要外包你的大腦",
       transition: {
         slideEnter: SlideAnimation.BOUNCE,
         characterEffect: CharacterAnimation.JUMP,
@@ -123,7 +123,7 @@ export const APP_CONFIG: AppConfig = {
       id: 'slide-10',
       type: SlideType.IMAGE,
       content: assetPath('assets/slide-10.png'),
-      dialogue: "一言不合就開課，堂堂上到一十二。全程高潮無尿點，回首已過子夜天。",
+      dialogue: "重點不在用哪套 AI，而是產出結果是否達標",
       transition: {
         slideEnter: SlideAnimation.BOUNCE,
         characterEffect: CharacterAnimation.JUMP,

@@ -19,7 +19,7 @@ const App: React.FC = () => {
   const [characterEffect, setCharacterEffect] = useState<CharacterAnimation | undefined>(undefined);
 
   // Controls the visible position of the character wrapper (string for CSS value)
-  // '5%' keeps character on the left to avoid overlapping dialogue box on desktop
+  // Responsive position: centered on mobile, left-aligned on desktop
   const [charPosition, setCharPosition] = useState('5%');
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -240,7 +240,7 @@ const App: React.FC = () => {
 
       {/* 2. Character Layer */}
       <div
-        className="absolute bottom-20 sm:bottom-12 md:bottom-6 lg:bottom-2 z-20 transition-all duration-700 ease-linear will-change-transform"
+        className="absolute bottom-20 sm:bottom-16 md:bottom-8 lg:bottom-4 xl:bottom-3 z-20 transition-all duration-700 ease-linear will-change-transform"
         style={{
           left: charPosition,
           transform: 'translateX(-50%)' // Center the container on the point

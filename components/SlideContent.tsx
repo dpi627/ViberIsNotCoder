@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SlideConfig, SlideType, SlideAnimation } from '../types';
 
 interface SlideContentProps {
@@ -41,17 +41,72 @@ const SlideContent: React.FC<SlideContentProps> = ({ slide, isActive }) => {
   // Get animation class based on slide configuration
   const animationClass = getEnterAnimationClass(slide.transition?.slideEnter);
 
+  // Lazy loading state for images
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const imgRef = useRef<HTMLDivElement>(null);
+
+  // Trigger image loading when slide becomes visible
+  useEffect(() => {
+    if (slide.type === SlideType.IMAGE) {
+      if (isActive) {
+        // Load immediately when active
+        setShouldLoad(true);
+      } else {
+        // Use IntersectionObserver for preloading nearby slides
+        if (!imgRef.current) return;
+        
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                setShouldLoad(true);
+                observer.disconnect();
+              }
+            });
+          },
+          { rootMargin: '100px' } // Preload when within 100px
+        );
+
+        observer.observe(imgRef.current);
+        return () => observer.disconnect();
+      }
+    }
+  }, [slide.type, isActive]);
+
   const renderContent = () => {
     switch (slide.type) {
       case SlideType.IMAGE:
         return (
-          <div className="absolute inset-0 w-full h-full">
+          <div ref={imgRef} className="absolute inset-0 w-full h-full">
             <div className="absolute inset-0 bg-black/20 z-10" /> {/* Dim overlay */}
-            <img
-              src={slide.content as string}
-              alt="Slide"
-              className="w-full h-full object-contain"
-            />
+            
+            {/* Loading placeholder */}
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+                <div className="animate-pulse flex flex-col items-center gap-4">
+                  <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-gray-400 text-sm">載入中...</p>
+                </div>
+              </div>
+            )}
+            
+            {/* Actual image - only load when shouldLoad is true */}
+            {shouldLoad && (
+              <img
+                src={slide.content as string}
+                alt="Slide"
+                className={`w-full h-full object-contain transition-opacity duration-500 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                loading="lazy"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => {
+                  console.error('Failed to load image:', slide.content);
+                  setImageLoaded(true); // Still hide placeholder on error
+                }}
+              />
+            )}
           </div>
         );
 

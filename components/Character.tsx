@@ -71,7 +71,7 @@ const Character: React.FC<CharacterProps> = ({ imageSrc, state, effectAnimation,
   return (
     <div
       onClick={onClick}
-      className={`relative w-28 h-28 md:w-40 md:h-40 lg:w-48 lg:h-48 z-20 pointer-events-auto cursor-pointer ${getTransitionClass()} ${state === CharacterState.HIDDEN ? 'opacity-0 translate-y-20' : 'opacity-100 translate-y-0'}`}
+      className={`relative w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 z-20 pointer-events-auto cursor-pointer ${getTransitionClass()} ${state === CharacterState.HIDDEN ? 'opacity-0 translate-y-20' : 'opacity-100 translate-y-0'}`}
     >
       {/* 
         Avatar Container Style:

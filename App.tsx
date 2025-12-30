@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Play, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Home, Maximize2, Minimize2 } from 'lucide-react';
 import { APP_CONFIG } from './constants';
 import { CharacterState, CharacterAnimation } from './types';
 import SlideContent from './components/SlideContent';
@@ -19,8 +19,9 @@ const App: React.FC = () => {
   const [characterEffect, setCharacterEffect] = useState<CharacterAnimation | undefined>(undefined);
 
   // Controls the visible position of the character wrapper (string for CSS value)
-  // '8rem' moves the character slightly to the right, allowing for better overlap with the dialogue box.
-  const [charPosition, setCharPosition] = useState('8rem');
+  // '8%' moves the character slightly to the right, allowing for better overlap with the dialogue box.
+  const [charPosition, setCharPosition] = useState('8%');
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const timers = useRef<NodeJS.Timeout[]>([]);
 
@@ -36,14 +37,14 @@ const App: React.FC = () => {
 
     // Quick transition to first slide
     setCharacterState(CharacterState.RUNNING_LEFT);
-    setCharPosition('-10rem');
+    setCharPosition('-15%');
 
     setTimeout(() => {
       setCurrentSlideIndex(0);
-      setCharPosition('120%');
+      setCharPosition('105%');
 
       setTimeout(() => {
-        setCharPosition('8rem');
+        setCharPosition('8%');
         setCharacterState(CharacterState.RUNNING_LEFT);
 
         setTimeout(() => {
@@ -61,6 +62,30 @@ const App: React.FC = () => {
   const clearTimers = useCallback(() => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
+  }, []);
+
+  // Fullscreen toggle
+  const handleFullscreenToggle = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch((err) => {
+        console.error('Fullscreen error:', err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false);
+      });
+    }
+  }, []);
+
+  // Listen for fullscreen change (ESC key exits fullscreen)
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   const requestTimer = (fn: () => void, ms: number) => {
@@ -129,11 +154,11 @@ const App: React.FC = () => {
       setCurrentSlideIndex((prev) => prev + 1);
 
       // 4. Reset Character pos for entry
-      setCharPosition('-10rem'); // Snap back to left edge (hidden or start)
+      setCharPosition('-15%'); // Snap back to left edge (hidden or start)
 
       // Short delay for the slide render
       setTimeout(() => {
-        setCharPosition('8rem'); // Run to resting spot
+        setCharPosition('8%'); // Run to resting spot
 
         // 5. Stop Character and trigger effect animation
         setTimeout(() => {
@@ -159,16 +184,16 @@ const App: React.FC = () => {
 
     // Character runs Left (backwards concept)
     setCharacterState(CharacterState.RUNNING_LEFT);
-    setCharPosition('-10rem'); // Run off screen left
+    setCharPosition('-15%'); // Run off screen left
 
     setTimeout(() => {
       setCurrentSlideIndex((prev) => prev - 1);
 
       // Character enters from Right for continuity
-      setCharPosition('120%');
+      setCharPosition('105%');
 
       setTimeout(() => {
-        setCharPosition('8rem'); // Run back to resting spot
+        setCharPosition('8%'); // Run back to resting spot
         setCharacterState(CharacterState.RUNNING_LEFT); // Ensure facing left while running in
 
         setTimeout(() => {
@@ -215,7 +240,7 @@ const App: React.FC = () => {
 
       {/* 2. Character Layer */}
       <div
-        className="absolute bottom-0 z-20 transition-all duration-700 ease-linear will-change-transform"
+        className="absolute bottom-16 sm:bottom-8 md:bottom-4 lg:bottom-0 z-20 transition-all duration-700 ease-linear will-change-transform"
         style={{
           left: charPosition,
           transform: 'translateX(-50%)' // Center the container on the point
@@ -252,9 +277,9 @@ const App: React.FC = () => {
             <button
               onClick={handlePrev}
               disabled={currentSlideIndex === 0 || isTransitioning}
-              className={`p-3 rounded-full bg-black/20 hover:bg-white/20 backdrop-blur-md text-white transition-all transform hover:scale-110 disabled:opacity-0 disabled:cursor-not-allowed ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+              className={`p-2 sm:p-3 rounded-full bg-black/20 hover:bg-white/20 backdrop-blur-md text-white transition-all transform hover:scale-110 disabled:opacity-0 disabled:cursor-not-allowed ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
             >
-              <ChevronLeft size={40} />
+              <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
             </button>
           </div>
 
@@ -262,14 +287,25 @@ const App: React.FC = () => {
             <button
               onClick={handleNext}
               disabled={currentSlideIndex === APP_CONFIG.slides.length - 1 || isTransitioning}
-              className={`p-3 rounded-full bg-black/20 hover:bg-white/20 backdrop-blur-md text-white transition-all transform hover:scale-110 disabled:opacity-0 disabled:cursor-not-allowed ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+              className={`p-2 sm:p-3 rounded-full bg-black/20 hover:bg-white/20 backdrop-blur-md text-white transition-all transform hover:scale-110 disabled:opacity-0 disabled:cursor-not-allowed ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
             >
-              <ChevronRight size={40} />
+              <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
             </button>
           </div>
 
           {/* Bottom Right: Fullscreen, Home Buttons + Slide Counter */}
           <div className="absolute bottom-0 right-0 pointer-events-auto flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+            <button
+              onClick={handleFullscreenToggle}
+              className="p-2 md:p-2.5 rounded-full bg-black/50 hover:bg-white/20 backdrop-blur-sm text-white transition-all transform hover:scale-110"
+              title={isFullscreen ? "退出全螢幕" : "全螢幕"}
+            >
+              {isFullscreen ? (
+                <Minimize2 size={18} className="md:w-5 md:h-5" />
+              ) : (
+                <Maximize2 size={18} className="md:w-5 md:h-5" />
+              )}
+            </button>
             <button
               onClick={handleGoHome}
               disabled={currentSlideIndex === 0 || isTransitioning}

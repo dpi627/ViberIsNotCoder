@@ -62,17 +62,18 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ text, isVisible, dialogueAnim
     <div
       key={animationKey}
       className={`
-        absolute bottom-8 left-44 md:left-52 lg:left-60
-        w-fit max-w-[50vw] md:max-w-[60vw] lg:max-w-[65vw]
-        bg-black/30 backdrop-blur-lg border border-white/20 
-        text-white p-4 md:p-6 rounded-2xl shadow-2xl z-30
+        absolute bottom-4 sm:bottom-6 md:bottom-6 lg:bottom-3
+        left-2 right-2 sm:left-auto sm:right-auto sm:left-24 md:left-36 lg:left-48
+        w-auto sm:w-fit max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[60vw] lg:max-w-[65vw]
+        bg-black/50 sm:bg-black/30 backdrop-blur-lg border border-white/20 
+        text-white p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-2xl z-30
         transition-all duration-500 ease-out transform origin-bottom-left
         ${isVisible ? `opacity-100 scale-100 translate-y-0 ${animationClass}` : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}
       `}
     >
-      <div className="flex flex-col space-y-2">
-        <span className="text-orange-500 text-xs font-bold uppercase tracking-widest">Will 保哥</span>
-        <p className={`text-lg md:text-xl leading-relaxed font-light ${isTyping ? 'typewriter-cursor' : ''}`}>
+      <div className="flex flex-col space-y-1 sm:space-y-2">
+        <span className="text-orange-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest">Will 保哥</span>
+        <p className={`text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-light ${isTyping ? 'typewriter-cursor' : ''}`}>
           {displayedText}
         </p>
       </div>

@@ -19,8 +19,8 @@ const App: React.FC = () => {
   const [characterEffect, setCharacterEffect] = useState<CharacterAnimation | undefined>(undefined);
 
   // Controls the visible position of the character wrapper (string for CSS value)
-  // '8%' moves the character slightly to the right, allowing for better overlap with the dialogue box.
-  const [charPosition, setCharPosition] = useState('8%');
+  // '5%' keeps character on the left to avoid overlapping dialogue box on desktop
+  const [charPosition, setCharPosition] = useState('5%');
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const timers = useRef<NodeJS.Timeout[]>([]);
@@ -44,7 +44,7 @@ const App: React.FC = () => {
       setCharPosition('105%');
 
       setTimeout(() => {
-        setCharPosition('8%');
+        setCharPosition('5%');
         setCharacterState(CharacterState.RUNNING_LEFT);
 
         setTimeout(() => {
@@ -158,7 +158,7 @@ const App: React.FC = () => {
 
       // Short delay for the slide render
       setTimeout(() => {
-        setCharPosition('8%'); // Run to resting spot
+        setCharPosition('5%'); // Run to resting spot
 
         // 5. Stop Character and trigger effect animation
         setTimeout(() => {
@@ -193,7 +193,7 @@ const App: React.FC = () => {
       setCharPosition('105%');
 
       setTimeout(() => {
-        setCharPosition('8%'); // Run back to resting spot
+        setCharPosition('5%'); // Run back to resting spot
         setCharacterState(CharacterState.RUNNING_LEFT); // Ensure facing left while running in
 
         setTimeout(() => {
@@ -240,7 +240,7 @@ const App: React.FC = () => {
 
       {/* 2. Character Layer */}
       <div
-        className="absolute bottom-16 sm:bottom-8 md:bottom-4 lg:bottom-0 z-20 transition-all duration-700 ease-linear will-change-transform"
+        className="absolute bottom-20 sm:bottom-12 md:bottom-6 lg:bottom-2 z-20 transition-all duration-700 ease-linear will-change-transform"
         style={{
           left: charPosition,
           transform: 'translateX(-50%)' // Center the container on the point

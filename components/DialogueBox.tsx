@@ -63,8 +63,8 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ text, isVisible, dialogueAnim
       key={animationKey}
       className={`
         absolute bottom-4 sm:bottom-6 md:bottom-6 lg:bottom-3
-        left-2 right-2 sm:left-auto sm:right-auto sm:left-24 md:left-36 lg:left-48
-        w-auto sm:w-fit max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[60vw] lg:max-w-[65vw]
+        left-2 right-2 sm:left-auto sm:right-auto sm:left-28 md:left-44 lg:left-56 xl:left-64
+        w-auto sm:w-fit max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-8rem)] md:max-w-[58vw] lg:max-w-[60vw]
         bg-black/50 sm:bg-black/30 backdrop-blur-lg border border-white/20 
         text-white p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-2xl z-30
         transition-all duration-500 ease-out transform origin-bottom-left
